@@ -76,7 +76,7 @@ Responsabilidades:
 - Coordenar adapters por meio do container.
 - Validar pré-condições do caso de uso.
 
-Exemplos:
+Casos de uso atuais:
 
 - `ChatUseCase`
 - `RagUseCase`

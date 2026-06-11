@@ -61,7 +61,7 @@ Ao adicionar testes:
 - Não chame OpenAI, Claude, AWS ou Milvus em teste unitário.
 - Testes de integração devem ser separados e marcados.
 
-Sugestão de estrutura futura:
+Estrutura recomendada ao adicionar testes:
 
 ```text
 tests/

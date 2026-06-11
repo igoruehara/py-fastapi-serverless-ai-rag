@@ -88,7 +88,7 @@ AGENTS.md                          # Instruções globais para agentes de IA
 docs/sdd/architecture.md           # Arquitetura e decisões
 docs/sdd/api-contracts.md          # Contratos dos endpoints
 docs/sdd/coding-standards.md       # Padrões de código
-docs/sdd/workflows/                # Workflows de negócio ou exemplos
+docs/sdd/workflows/                # Workflows reais do projeto
 docs/ai/rules.md                   # Regras técnicas para pessoas e agentes
 docs/ai/continuation.md            # Guia de continuidade assistida por IA
 docs/ai/skills/                    # Skills locais para tarefas recorrentes
@@ -116,7 +116,7 @@ POST /api/conversation
 
 Recebe uma mensagem de conversa e publica na fila SQS criada pela stack.
 
-Exemplo:
+Payload operacional:
 
 ```json
 {
@@ -139,7 +139,7 @@ Endpoint:
 POST /api/llm/chat
 ```
 
-Exemplo com OpenAI:
+Payload para OpenAI:
 
 ```json
 {
@@ -150,7 +150,7 @@ Exemplo com OpenAI:
 }
 ```
 
-Exemplo com Claude:
+Payload para Claude:
 
 ```json
 {
@@ -190,7 +190,7 @@ A busca híbrida combina:
 - Boost por `extraFields.relevante = true`.
 - Limite opcional de chunks por documento.
 
-Exemplo de ingestão:
+Payload de ingestão:
 
 ```json
 {
@@ -212,7 +212,7 @@ Exemplo de ingestão:
 }
 ```
 
-Exemplo de chat com RAG:
+Payload de chat com RAG:
 
 ```json
 {
@@ -294,7 +294,7 @@ MILVUS_COLLECTION_NAME
 MILVUS_EMBEDDING_DIM
 ```
 
-Exemplo de parâmetro no SSM:
+Parâmetro no SSM:
 
 ```text
 /dev-fastapi-serverless/dev/OPENAI_API_KEY

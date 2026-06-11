@@ -33,7 +33,7 @@ Evite em teste unitário:
 
 Use fakes para ports.
 
-## Estrutura sugerida
+## Estrutura de testes do projeto
 
 ```text
 tests/
@@ -45,7 +45,7 @@ tests/
     infrastructure/
 ```
 
-## Exemplos de testes úteis
+## Testes prioritários
 
 ### Conversation
 

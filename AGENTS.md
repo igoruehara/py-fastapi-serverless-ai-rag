@@ -118,7 +118,10 @@ docs/
     api-contracts.md
     coding-standards.md
     workflows/
-      consulta-agendamento.md
+      conversation-sqs.md
+      llm-chat.md
+      rag-ingestao-busca-chat.md
+      deploy-serverless.md
   ai/
     rules.md
     continuation.md
