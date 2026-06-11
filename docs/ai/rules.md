@@ -29,7 +29,7 @@ Estas regras devem ser seguidas por pessoas e agentes de IA ao evoluir o projeto
 
 ## APIs
 
-- Toda nova rota deve ser documentada em `docs/api-contracts.md`.
+- Toda nova rota deve ser documentada em `docs/sdd/api-contracts.md`.
 - Payloads devem usar camelCase na API pública.
 - Internamente, use snake_case.
 - Converta DTOs de API para entidades de domínio.

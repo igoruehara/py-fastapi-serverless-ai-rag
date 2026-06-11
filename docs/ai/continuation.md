@@ -6,9 +6,9 @@ Este arquivo é pensado para agentes de IA que precisam continuar o projeto sem 
 
 1. Leia `README.md`.
 2. Leia `AGENTS.md`.
-3. Leia `docs/architecture.md`.
-4. Leia `docs/api-contracts.md` se a tarefa envolver endpoint.
-5. Leia `docs/coding-standards.md` antes de alterar código.
+3. Leia `docs/sdd/architecture.md`.
+4. Leia `docs/sdd/api-contracts.md` se a tarefa envolver endpoint.
+5. Leia `docs/sdd/coding-standards.md` antes de alterar código.
 
 ## Como responder a uma demanda
 

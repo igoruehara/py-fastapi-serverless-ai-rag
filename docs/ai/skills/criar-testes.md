@@ -11,9 +11,9 @@ Adicionar testes úteis sem acoplar a suíte a provedores externos como AWS, Ope
 Leia:
 
 - `AGENTS.md`
-- `docs/coding-standards.md`
-- `docs/architecture.md`
-- `rules/project-rules.md`
+- `docs/sdd/coding-standards.md`
+- `docs/sdd/architecture.md`
+- `docs/ai/rules.md`
 
 ## Estratégia
 

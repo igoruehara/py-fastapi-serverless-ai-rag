@@ -102,15 +102,41 @@ Ao criar uma nova feature:
 4. Implemente adapters em `app/infrastructure`.
 5. Exponha a entrada em `app/api/routes` ou `app/handlers`.
 6. Registre dependências em `app/application/container.py`.
-7. Atualize `docs/api-contracts.md` se houver novo endpoint.
-8. Atualize `docs/architecture.md` se houver decisão arquitetural relevante.
+7. Atualize `docs/sdd/api-contracts.md` se houver novo endpoint.
+8. Atualize `docs/sdd/architecture.md` se houver decisão arquitetural relevante.
 9. Atualize `.env.example` se houver nova configuração.
+
+## Estrutura SDD e IA
+
+O projeto separa documentação de design e documentação para continuidade com IA:
+
+```text
+AGENTS.md
+docs/
+  sdd/
+    architecture.md
+    api-contracts.md
+    coding-standards.md
+    workflows/
+      consulta-agendamento.md
+  ai/
+    rules.md
+    continuation.md
+    skills/
+      criar-skill-api.md
+      revisar-arquitetura.md
+      criar-testes.md
+```
+
+Use `docs/sdd/` para documentação de produto, arquitetura, contratos e workflows.
+
+Use `docs/ai/` para regras, continuidade assistida por IA e skills reaproveitáveis por agentes.
 
 ## Regras para IA
 
 Ao usar Codex, Cursor, Claude Code, Copilot ou outro agente:
 
-- Leia `README.md`, `docs/architecture.md` e `docs/coding-standards.md` antes de alterar código.
+- Leia `README.md`, `docs/sdd/architecture.md`, `docs/sdd/coding-standards.md` e `docs/ai/rules.md` antes de alterar código.
 - Não invente uma arquitetura paralela.
 - Não mova regras para `api/routes`.
 - Não importe SDKs externos dentro de `domain`.
@@ -137,9 +163,10 @@ ruff check .
 
 ## Onde documentar
 
-- Arquitetura: `docs/architecture.md`
-- Contratos HTTP: `docs/api-contracts.md`
-- Padrões de código: `docs/coding-standards.md`
-- Workflows de negócio: `docs/workflows/`
-- Regras para agentes: `AGENTS.md` e `rules/`
-- Skills locais para agentes: `.agents/skills/`
+- Arquitetura: `docs/sdd/architecture.md`
+- Contratos HTTP: `docs/sdd/api-contracts.md`
+- Padrões de código: `docs/sdd/coding-standards.md`
+- Workflows de negócio: `docs/sdd/workflows/`
+- Regras para agentes: `docs/ai/rules.md`
+- Continuidade com IA: `docs/ai/continuation.md`
+- Skills locais para agentes: `docs/ai/skills/`

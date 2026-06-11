@@ -11,9 +11,9 @@ Detectar violações de arquitetura, acoplamentos indevidos e riscos de evoluç�
 Leia:
 
 - `AGENTS.md`
-- `docs/architecture.md`
-- `rules/project-rules.md`
-- `rules/ai-continuation-rules.md`
+- `docs/sdd/architecture.md`
+- `docs/ai/rules.md`
+- `docs/ai/continuation.md`
 
 ## Checklist
 

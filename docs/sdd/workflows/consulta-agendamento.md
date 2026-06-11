@@ -126,5 +126,5 @@ app/infrastructure/appointments/
 - Criar entidades e portas no domínio.
 - Criar caso de uso específico em `application/use_cases`.
 - Usar adapters em `infrastructure`.
-- Atualizar `docs/api-contracts.md` se criar novo endpoint.
+- Atualizar `docs/sdd/api-contracts.md` se criar novo endpoint.
 - Criar testes unitários para o caso de uso.

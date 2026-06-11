@@ -195,4 +195,4 @@ Milvus é um vector database robusto para RAG e suporta busca vetorial e busca h
 2. Converta DTO para entidade de domínio.
 3. Chame um caso de uso.
 4. Retorne resposta serializável.
-5. Documente em `docs/api-contracts.md`.
+5. Documente em `docs/sdd/api-contracts.md`.

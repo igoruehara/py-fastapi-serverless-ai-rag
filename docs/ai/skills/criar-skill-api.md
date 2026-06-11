@@ -18,10 +18,10 @@ api/routes
 Leia:
 
 - `AGENTS.md`
-- `docs/architecture.md`
-- `docs/api-contracts.md`
-- `docs/coding-standards.md`
-- `rules/project-rules.md`
+- `docs/sdd/architecture.md`
+- `docs/sdd/api-contracts.md`
+- `docs/sdd/coding-standards.md`
+- `docs/ai/rules.md`
 
 ## Passo a passo
 
@@ -33,7 +33,7 @@ Leia:
 6. Implemente adapters externos em `app/infrastructure`, se necessário.
 7. Registre dependências em `app/application/container.py`.
 8. Inclua a rota em `app/main.py`, se for um novo router.
-9. Atualize `docs/api-contracts.md`.
+9. Atualize `docs/sdd/api-contracts.md`.
 10. Atualize `.env.example`, se houver nova configuração.
 
 ## Regras
