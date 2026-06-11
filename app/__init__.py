@@ -1,0 +1,1 @@
+"""FastAPI serverless application package."""

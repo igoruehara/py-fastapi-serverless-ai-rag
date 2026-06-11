@@ -1,0 +1,9 @@
+APP_NAME: ${self:service}
+STAGE: ${self:provider.stage}
+AWS_REGION: ${self:provider.region}
+APP_CONFIG_SOURCE: ssm
+APP_SSM_PREFIX: ${self:custom.ssmPrefix}
+NLP_CONVERSATION_QUEUE_URL:
+  Ref: NlpConversationQueue
+CONNECTIONS_TABLE:
+  Ref: ConnectionsTable

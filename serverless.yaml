@@ -1,0 +1,88 @@
+service: ${env:SERVICE_PREFIX, 'dev'}-fastapi-serverless
+frameworkVersion: '4'
+configValidationMode: error
+
+custom: ${file(yml/custom.yml)}
+
+provider: ${file(yml/provider.yml)}
+
+functions:
+  main:
+    image:
+      name: appimage
+      command:
+        - app.lambda_handler.handler
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+      - websocket: $connect
+      - websocket: $disconnect
+      - websocket: $default
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - NlpConversationQueue
+              - Arn
+          batchSize: 1
+          maximumBatchingWindow: 5
+          functionResponseType: ReportBatchItemFailures
+
+package:
+  patterns:
+    - '!**'
+
+resources:
+  Resources:
+    NlpConversationDLQ:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:provider.stage}-nlp-conversation-dlq
+        MessageRetentionPeriod: 1209600
+
+    NlpConversationQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-${self:provider.stage}-nlp-conversation
+        VisibilityTimeoutSeconds: 900
+        MessageRetentionPeriod: 1209600
+        ReceiveMessageWaitTimeSeconds: 10
+        RedrivePolicy:
+          deadLetterTargetArn:
+            Fn::GetAtt:
+              - NlpConversationDLQ
+              - Arn
+          maxReceiveCount: 3
+
+    ConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${self:provider.stage}-connections
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+
+  Outputs:
+    HttpApiUrl:
+      Description: HTTP API URL
+      Value:
+        Fn::Sub: https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+    WebSocketApiUrl:
+      Description: WebSocket API URL
+      Value:
+        Fn::Sub: wss://${WebsocketsApi}.execute-api.${AWS::Region}.amazonaws.com/${self:provider.stage}
+    NlpConversationQueueUrl:
+      Description: SQS queue URL
+      Value:
+        Ref: NlpConversationQueue
+    ConnectionsTableName:
+      Description: DynamoDB table used for WebSocket connections
+      Value:
+        Ref: ConnectionsTable

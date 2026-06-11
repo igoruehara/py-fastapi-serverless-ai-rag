@@ -1,0 +1,71 @@
+name: aws
+runtime: python3.14
+region: ${env:AWS_REGION, 'us-east-1'}
+stage: ${opt:stage, env:STAGE, 'dev'}
+memorySize: 3008
+timeout: 900
+ecr:
+  images:
+    appimage:
+      path: ./
+      platform: linux/amd64
+environment: ${file(yml/environment.yml)}
+httpApi:
+  cors:
+    allowedOrigins:
+      - '*'
+    allowedHeaders:
+      - Origin
+      - X-Requested-With
+      - Content-Type
+      - Accept
+      - Authorization
+      - stripe-signature
+    allowedMethods:
+      - GET
+      - HEAD
+      - PUT
+      - PATCH
+      - POST
+      - DELETE
+      - OPTIONS
+iam:
+  role:
+    statements:
+      - Effect: Allow
+        Action:
+          - sqs:SendMessage
+          - sqs:ReceiveMessage
+          - sqs:DeleteMessage
+          - sqs:GetQueueUrl
+          - sqs:GetQueueAttributes
+        Resource:
+          - Fn::GetAtt:
+              - NlpConversationQueue
+              - Arn
+          - Fn::GetAtt:
+              - NlpConversationDLQ
+              - Arn
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:DeleteItem
+          - dynamodb:UpdateItem
+          - dynamodb:GetItem
+          - dynamodb:Scan
+        Resource:
+          - Fn::GetAtt:
+              - ConnectionsTable
+              - Arn
+      - Effect: Allow
+        Action:
+          - execute-api:ManageConnections
+        Resource:
+          - Fn::Sub: arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:*/${self:provider.stage}/POST/@connections/*
+      - Effect: Allow
+        Action:
+          - ssm:GetParameter
+          - ssm:GetParameters
+          - ssm:GetParametersByPath
+        Resource:
+          - Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${self:custom.ssmPrefix}/*

@@ -1,0 +1,88 @@
+name: Deploy FastAPI Lambda
+
+on:
+  push:
+    branches:
+      - main
+      - homolog
+      - prd
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Serverless stage"
+        required: false
+        default: "dev"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      - name: Install Serverless Framework
+        run: npm install
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: fastapi-serverless-${{ github.run_id }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      - name: Set stage
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          INPUT_STAGE: ${{ github.event.inputs.stage }}
+        run: |
+          if [ -n "$INPUT_STAGE" ]; then
+            STAGE="$INPUT_STAGE"
+          elif [ "$BRANCH_NAME" = "prd" ]; then
+            STAGE="prd"
+          elif [ "$BRANCH_NAME" = "homolog" ]; then
+            STAGE="hml"
+          else
+            STAGE="dev"
+          fi
+
+          echo "STAGE=$STAGE" >> "$GITHUB_ENV"
+          echo "SERVICE_PREFIX=$STAGE" >> "$GITHUB_ENV"
+
+      - name: Deploy
+        env:
+          STAGE: ${{ env.STAGE }}
+          SERVICE_PREFIX: ${{ env.SERVICE_PREFIX }}
+          AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+          SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        run: npx serverless deploy --stage "$STAGE"
+
+      - name: Cleanup old ECR images
+        if: always()
+        run: |
+          REPOS=$(aws ecr describe-repositories --query "repositories[*].repositoryName" --output text 2>/dev/null || true)
+          for REPO in $REPOS; do
+            COUNT=$(aws ecr describe-images --repository-name "$REPO" --query 'imageDetails | length(@)' --output text 2>/dev/null || echo "0")
+            if [ "$COUNT" -gt 3 ]; then
+              OLD_DIGESTS=$(aws ecr describe-images \
+                --repository-name "$REPO" \
+                --query 'sort_by(imageDetails, &imagePushedAt) | [0:-3].imageDigest' \
+                --output text 2>/dev/null || true)
+              if [ -n "$OLD_DIGESTS" ]; then
+                IMAGE_IDS=""
+                for DIGEST in $OLD_DIGESTS; do
+                  IMAGE_IDS="$IMAGE_IDS imageDigest=$DIGEST"
+                done
+                aws ecr batch-delete-image --repository-name "$REPO" --image-ids $IMAGE_IDS 2>/dev/null || true
+              fi
+            fi
+          done
