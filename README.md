@@ -77,6 +77,33 @@ FastAPI / Lambda / SQS / WebSocket
 
 Com isso, a regra central não depende diretamente de FastAPI, boto3, OpenAI, Claude ou Milvus.
 
+## Continuidade com IA
+
+O repositório também foi preparado para ser evoluído por pessoas usando agentes de IA como Codex, Cursor, Claude Code ou Copilot.
+
+Arquivos principais:
+
+```text
+AGENTS.md                          # Instruções globais para agentes de IA
+rules/project-rules.md             # Regras técnicas do projeto
+rules/ai-continuation-rules.md     # Regras para continuidade com IA
+docs/architecture.md               # Arquitetura e decisões
+docs/api-contracts.md              # Contratos dos endpoints
+docs/coding-standards.md           # Padrões de código
+docs/workflows/                    # Workflows de negócio ou exemplos
+.agents/skills/                    # Skills locais para tarefas recorrentes
+```
+
+Skills disponíveis:
+
+```text
+.agents/skills/criar-skill-api
+.agents/skills/revisar-arquitetura
+.agents/skills/criar-testes
+```
+
+A intenção é reduzir ambiguidade para quem baixar o projeto e quiser continuar usando IA, mantendo o padrão hexagonal, os contratos de API, as regras de deploy e o isolamento entre domínio e infraestrutura.
+
 ## Funcionalidades
 
 ### Conversation + SQS
